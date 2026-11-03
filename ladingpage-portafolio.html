@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ana Santa Cruz | Desarrolladora Full Stack</title>
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<style>
+  :root{--sky:#e8f6ff;--cyan:#22d3ee;--blue:#0284c7;--deep:#0c4a6e}
+  body{background:linear-gradient(180deg,#d9f1ff 0%,#eefaff 45%,#dff4ff 100%);color:#0c4a6e;font-family:'Segoe UI',system-ui,sans-serif}
+  /* Vidrio estilo Frutiger Aero */
+  .glass{background:linear-gradient(145deg,rgba(255,255,255,.85),rgba(255,255,255,.45));border:1px solid rgba(255,255,255,.9);box-shadow:0 8px 30px rgba(2,132,199,.15),inset 0 1px 0 #fff;backdrop-filter:blur(10px);border-radius:1.25rem}
+  .btn{background:linear-gradient(180deg,#67e8f9,#0ea5e9 55%,#0284c7);color:#fff;border-radius:999px;padding:.7rem 1.6rem;font-weight:600;box-shadow:0 6px 16px rgba(2,132,199,.35),inset 0 2px 0 rgba(255,255,255,.6);transition:.25s}
+  .btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+  .btn-ghost{border-radius:999px;padding:.7rem 1.6rem;font-weight:600;background:rgba(255,255,255,.7);border:1px solid #bae6fd;transition:.25s}
+  .btn-ghost:hover{background:#fff;transform:translateY(-2px)}
+  /* Burbujas flotantes */
+  .bubble{position:absolute;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.95),rgba(125,211,252,.25) 60%,rgba(34,211,238,.15));border:1px solid rgba(255,255,255,.8);animation:float 9s ease-in-out infinite}
+  @keyframes float{50%{transform:translateY(-22px)}}
+  .reveal{opacity:0;transform:translateY(28px);transition:.8s}
+  .reveal.show{opacity:1;transform:none}
+  .grad-text{background:linear-gradient(90deg,#0284c7,#22d3ee);-webkit-background-clip:text;color:transparent}
+  /* Imagen de fondo reutilizable */
+  .bg-img{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.35;z-index:-1}
+  /* Línea de tiempo */
+  .tl{background:linear-gradient(160deg,#dfe7ee,#eef2f6 50%,#d6e2ec);border-radius:2rem;position:relative;overflow:hidden;box-shadow:inset 0 0 60px rgba(255,255,255,.8),0 10px 40px rgba(71,85,105,.15)}
+  .tl::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 10%,rgba(255,255,255,.9),transparent 40%),radial-gradient(circle at 90% 90%,rgba(186,230,253,.6),transparent 40%);pointer-events:none}
+  .node{width:3.2rem;height:3.2rem;border-radius:50%;background:radial-gradient(circle at 30% 25%,#fff,#bae6fd 45%,#38bdf8);border:2px solid #fff;box-shadow:0 4px 12px rgba(2,132,199,.3);transition:.3s;font-weight:700;color:#075985;position:relative;z-index:2}
+  .node:hover{transform:scale(1.15)}
+  .node.active{background:radial-gradient(circle at 30% 25%,#fff,#67e8f9 40%,#0284c7);color:#fff;transform:scale(1.25);box-shadow:0 0 0 6px rgba(34,211,238,.3),0 0 28px rgba(34,211,238,.9);animation:pulse 2s infinite}
+  @keyframes pulse{50%{box-shadow:0 0 0 12px rgba(34,211,238,.1),0 0 40px rgba(34,211,238,1)}}
+  .line{position:absolute;top:1.6rem;left:1.6rem;right:1.6rem;height:6px;border-radius:9px;background:#cbd5e1;overflow:hidden}
+  .line i{display:block;height:100%;width:0;background:linear-gradient(90deg,#22d3ee,#0284c7);box-shadow:0 0 14px #22d3ee;transition:width .6s}
+  .panel{display:none;animation:in .5s}
+  .panel.on{display:block}
+  @keyframes in{from{opacity:0;transform:translateY(14px)}}
+  .tag{display:inline-block;padding:.15rem .7rem;border-radius:999px;background:#e0f7ff;border:1px solid #bae6fd;font-size:.75rem;margin:.15rem}
+  /* Carrusel empresa */
+  .slide-img{height:200px;border-radius:1rem;background:linear-gradient(135deg,#7dd3fc,#22d3ee 60%,#0284c7);background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;text-shadow:0 2px 6px rgba(0,0,0,.3)}
+  .chip{padding:.4rem 1.1rem;border-radius:999px;border:1px solid #bae6fd;background:rgba(255,255,255,.7);cursor:pointer;transition:.25s;font-size:.9rem}
+  .chip.on,.chip:hover{background:linear-gradient(180deg,#67e8f9,#0284c7);color:#fff}
+  .card{transition:.3s}.card:hover{transform:translateY(-6px) scale(1.02)}
+  body{position:relative}
+  /* Adornos metálicos grises de fondo (imágenes en la carpeta img/) */
+  .orn{position:absolute;pointer-events:none;z-index:-10;mix-blend-mode:multiply;filter:grayscale(1) contrast(1.15);animation:float 12s ease-in-out infinite}
+  .orn-mask{-webkit-mask-image:radial-gradient(closest-side,#000 55%,transparent);mask-image:radial-gradient(closest-side,#000 55%,transparent)}
+  /* Tecnologías: palabras grandes, sin recuadro */
+  .tech-cat{font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:#0284c7;padding-bottom:.5rem;margin-bottom:.8rem;border-bottom:2px solid transparent;border-image:linear-gradient(90deg,#22d3ee,transparent) 1}
+  .tech-word{display:inline-block;margin:.15rem .7rem .15rem 0;font-size:clamp(1.5rem,2.8vw,2.2rem);font-weight:800;line-height:1.15;color:#0369a1;transition:.25s;cursor:default}
+  .tech-word:nth-child(3n+2){color:#0891b2}.tech-word:nth-child(3n){color:#0ea5e9}
+  .tech-word:hover{transform:translateY(-4px) scale(1.08);background:linear-gradient(90deg,#0284c7,#22d3ee);-webkit-background-clip:text;color:transparent;filter:drop-shadow(0 4px 8px rgba(34,211,238,.5))}
+  /* Dispositivos con carrusel circular (proyectos) */
+  .dev-wrap{position:relative;aspect-ratio:2/1;margin-bottom:1.25rem}
+  .laptop{position:absolute;left:0;top:0;width:74%}
+  .laptop .scr{position:relative;aspect-ratio:16/10;overflow:hidden;background:#0f172a;border:6px solid #1e293b;border-bottom-width:8px;border-radius:10px 10px 0 0;box-shadow:0 10px 24px rgba(2,132,199,.25)}
+  .laptop .base{height:10px;width:112%;margin-left:-6%;background:linear-gradient(#e2e8f0,#94a3b8);border-radius:0 0 14px 14px}
+  .laptop.tablet{width:62%}
+  .laptop.tablet .scr{aspect-ratio:4/3;border-width:9px;border-radius:18px}
+  .laptop.tablet .base{display:none}
+  .phone{position:absolute;right:0;bottom:0;width:22%;aspect-ratio:9/19;overflow:hidden;background:#0f172a;border:5px solid #1e293b;border-radius:18px;box-shadow:0 10px 24px rgba(2,132,199,.35)}
+  .ring{position:absolute;inset:0;overflow:hidden;cursor:pointer}
+  .ring-in{position:absolute;inset:0;transform-style:preserve-3d;transition:transform 1s cubic-bezier(.6,0,.2,1)}
+  .ring-in>div{position:absolute;left:12%;top:0;width:76%;height:100%;backface-visibility:hidden;background:linear-gradient(135deg,#7dd3fc,#0284c7);background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.65rem;font-weight:700;text-align:center;border-radius:6px}
+</style>
+</head>
+<body class="overflow-x-hidden">
+
+<!-- IMAGEN DE FONDO GENERAL (opcional): cielo, nubes, naturaleza. Poné tu URL en url('...') -->
+<div class="fixed inset-0 -z-20" style="background:url('') center/cover"></div>
+
+<!-- ADORNOS GRIS METÁLICO (silueta suelta por toda la página).
+     Para cambiar la imagen: editá el src. Para moverla: top/left/right en style. Para tamaño: width. Opacidad: opacity. -->
+<img class="orn" src="img/fondo-flor.jpg" alt="" style="top:4%;right:-40px;width:260px;opacity:.45">
+<img class="orn" src="img/fondo-flor.jpg" alt="" style="top:30%;left:-60px;width:200px;opacity:.3;animation-delay:2s">
+<img class="orn" src="img/fondo-baldosa.jpg" alt="" style="top:18%;left:38%;width:340px;opacity:.14;transform:rotate(-8deg);animation:none">
+<img class="orn orn-mask" src="img/fondo-barroco.jpg" alt="" style="top:42%;right:-80px;width:420px;opacity:.2">
+<img class="orn" src="img/fondo-flor.jpg" alt="" style="top:58%;right:6%;width:150px;opacity:.35;animation-delay:4s">
+<img class="orn" src="img/fondo-baldosa.jpg" alt="" style="top:68%;left:-80px;width:380px;opacity:.16;transform:rotate(12deg);animation:none">
+<img class="orn orn-mask" src="img/fondo-barroco.jpg" alt="" style="top:82%;left:-60px;width:380px;opacity:.18">
+<img class="orn" src="img/fondo-flor.jpg" alt="" style="top:90%;right:4%;width:220px;opacity:.4;animation-delay:3s">
+
+<!-- NAV -->
+<nav class="fixed top-3 inset-x-3 z-50 glass px-6 py-3 flex justify-between items-center max-w-6xl mx-auto">
+  <a href="#inicio" class="font-bold text-xl">Ana<span class="grad-text">.dev</span></a>
+  <div class="hidden md:flex gap-7 text-sm font-medium">
+    <a href="#proyectos" class="hover:text-sky-500">Proyectos</a>
+    <a href="#trayectoria" class="hover:text-sky-500">Trayectoria</a>
+    <a href="#tecnologias" class="hover:text-sky-500">Tecnologías</a>
+    <a href="#quien-soy" class="hover:text-sky-500">Sobre mí</a>
+  </div>
+  <a href="#contacto" class="btn !py-2 text-sm">Contacto</a>
+</nav>
+
+<!-- HERO -->
+<header id="inicio" class="relative min-h-screen flex items-center px-6 pt-28 pb-16 overflow-hidden">
+  <!-- IMAGEN DE FONDO HERO: reemplazá url('') (ej: paisaje celeste, cielo, césped brillante) -->
+  <div class="bg-img" style="background-image:url('')"></div>
+  <div class="bubble w-40 h-40 top-24 left-[8%]"></div>
+  <div class="bubble w-24 h-24 bottom-20 right-[12%]" style="animation-delay:2s"></div>
+  <div class="bubble w-16 h-16 top-1/3 right-1/4" style="animation-delay:4s"></div>
+
+  <div class="max-w-6xl mx-auto relative">
+    <div class="reveal">
+      <p class="font-semibold text-sky-600 mb-2">Hola, soy</p>
+      <h1 class="text-5xl lg:text-6xl font-bold leading-tight">Ana Santa Cruz<br><span class="grad-text">Desarrolladora Full Stack</span></h1>
+      <p class="mt-6 text-lg text-sky-900/80 max-w-lg">Creo aplicaciones web y móviles escalables. Trabajo con Angular, Vue, NestJS, Spring Boot y soluciones Web3 en sistemas médicos y financieros.</p>
+      <div class="flex flex-wrap gap-4 mt-8">
+        <a href="#proyectos" class="btn">Ver proyectos</a>
+        <a href="#trayectoria" class="btn-ghost">Mi trayectoria</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- PROYECTOS (filtrables) -->
+<section id="proyectos" class="relative px-6 py-20 max-w-6xl mx-auto">
+  <div class="text-center mb-8 reveal">
+    <h2 class="text-4xl font-bold">Proyectos <span class="grad-text">destacados</span></h2>
+  </div>
+  <div id="grid" class="grid md:grid-cols-2 gap-8"></div>
+</section>
+
+<!-- TRAYECTORIA: LÍNEA DE TIEMPO INTERACTIVA -->
+<section id="trayectoria" class="px-4 py-16 max-w-5xl mx-auto">
+  <div class="text-center mb-8 reveal">
+    <h2 class="text-4xl font-bold">Trayectoria</h2>
+    <p class="mt-2 text-sky-900/70">Tocá cada nodo o usá las flechas ← → del teclado en la pantalla.</p>
+  </div>
+
+  <div class="tl p-6 md:p-10 reveal" tabindex="0" id="tl">
+    <!-- IMAGEN DE FONDO TRAYECTORIA (opcional, se ve muy suave): -->
+    <div class="bg-img" style="background-image:url('');opacity:.2"></div>
+
+    <div class="relative flex justify-between mb-2 px-1">
+      <div class="line"><i id="prog"></i></div>
+      <button class="node active" data-i="0">1</button>
+      <button class="node" data-i="1">2</button>
+      <button class="node" data-i="2">3</button>
+      <button class="node" data-i="3">4</button>
+      <button class="node" data-i="4">5</button>
+    </div>
+    <div class="flex justify-between text-xs font-semibold text-slate-600 mb-8">
+      <span>2022</span><span>2023</span><span>2024</span><span>2025</span><span>Hoy</span>
+    </div>
+
+    <div class="glass p-6 md:p-8 relative">
+      <!-- PASO 1 -->
+      <div class="panel on">
+        <h3 class="text-2xl font-bold mb-2">2022 · El comienzo</h3>
+        <p>Entré al mundo de la programación y el diseño web. Empecé con cursos y fui aprendiendo conceptos hasta dar mis primeros pasos en diseño web con HTML y CSS. Después seguí con prototipos MVP de prueba.</p>
+        <p class="mt-3"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">MVP</span></p>
+      </div>
+      <!-- PASO 2 -->
+      <div class="panel">
+        <h3 class="text-2xl font-bold mb-2">2023 · Decidí estudiar</h3>
+        <p>A mediados de 2023 quise estudiar Ingeniería en Sistemas y ahí aprendí Pascal. Lamentablemente no ingresé a la UTN de mi ciudad, pero no frené: me fascina la tecnología, y así entré a la carrera de Desarrollo de Software.</p>
+        <p class="mt-3"><span class="tag">Pascal</span><span class="tag">Desarrollo de Software</span></p>
+      </div>
+      <!-- PASO 3 -->
+      <div class="panel">
+        <h3 class="text-2xl font-bold mb-2">2024 · Construir y desplegar</h3>
+        <p>Empecé mis primeros proyectos personales y trabajos de entrega de la carrera con Java, Spring Boot, Python, Flask, MongoDB y MariaDB. La carrera me siguió fascinando: hice cursos intensivos y seguí armando prototipos MVP en varios lenguajes. Aprendí no solo a construir sino también a desplegar, con Docker y configuración de pipelines.</p>
+        <p class="mt-3"><span class="tag">Java</span><span class="tag">Spring Boot</span><span class="tag">Python</span><span class="tag">Flask</span><span class="tag">MongoDB</span><span class="tag">MariaDB</span><span class="tag">Docker</span><span class="tag">CI/CD</span></p>
+      </div>
+      <!-- PASO 4: EMPRESA + CARRUSEL -->
+      <div class="panel">
+        <h3 class="text-2xl font-bold mb-2">2025 · Mi primer trabajo</h3>
+        <p>Ese año me gradué de la Tecnicatura Superior en Desarrollo de Software (Instituto Barranqueras N° 161) y entré como Full Stack Jr. en Orbe Software Innovación S.R.L. (junio 2025 – marzo 2026). Conseguir trabajo me sirvió para conocer cómo es el ambiente laboral real. Como ya manejaba los lenguajes, me resultó fácil adaptarme a la construcción de los proyectos de la empresa, en sectores como salud, seguridad y servicios. Estos son los cuatro en los que trabajé:</p>
+
+        <!-- CARRUSEL DE LOS 4 PROYECTOS DE LA EMPRESA -->
+        <div class="mt-5 relative">
+          <div class="overflow-hidden rounded-2xl">
+            <div id="ctrack" class="flex transition-transform duration-500">
+              <!-- Para poner la captura: cambiá style="" por style="background-image:url('img/reddo.png')" y borrá el texto -->
+              <div class="w-full shrink-0 px-1"><div class="slide-img" style="">Reddo</div>
+                <p class="mt-3 text-sm"><b>Reddo</b> · App web y móvil que conecta prestadores y clientes. Optimicé el flujo de registro sincronizando el estado local (Local Storage), eliminando recargas innecesarias y mejorando la retención de usuarios.</p>
+                <p class="mt-2"><span class="tag">Angular 19</span><span class="tag">Ionic</span><span class="tag">NestJS</span><span class="tag">PostgreSQL</span><span class="tag">Firebase Push</span></p></div>
+              <div class="w-full shrink-0 px-1"><div class="slide-img" style="">SaludApp</div>
+                <p class="mt-3 text-sm"><b>SaludApp</b> · Sistema administrativo para centros médicos con control de acceso por roles (RBAC). Diseñé un panel gráfico estilo Business Intelligence para consultorios y secretaría, y sincronicé los turnos en tiempo real con WebSockets para evitar solapamientos.</p>
+                <p class="mt-2"><span class="tag">Angular 19</span><span class="tag">NestJS</span><span class="tag">Socket.io</span><span class="tag">FullCalendar</span><span class="tag">Swagger</span></p></div>
+              <div class="w-full shrink-0 px-1"><div class="slide-img" style="">Zentry App</div>
+                <p class="mt-3 text-sm"><b>Zentry App</b> · Gestión de ingresos y reservas para complejos residenciales. Programé el flujo de check-in/out para visitas recurrentes y automaticé el despliegue en producción (Render/Railway) con pipelines de actualización automática.</p>
+                <p class="mt-2"><span class="tag">Angular 18</span><span class="tag">Ionic</span><span class="tag">Express.js</span><span class="tag">Sequelize</span><span class="tag">Docker</span><span class="tag">GitLab CI/CD</span></p></div>
+              <div class="w-full shrink-0 px-1"><div class="slide-img" style="">OdontoSoft</div>
+                <p class="mt-3 text-sm"><b>OdontoSoft</b> · SaaS para odontología. Lideré el rebranding y la estabilización de la plataforma de e-commerce interna y gestión de historias clínicas. Automaticé el despliegue continuo en GitLab y configuré pruebas automatizadas con PHPUnit.</p>
+                <p class="mt-2"><span class="tag">Vue.js 3</span><span class="tag">Laravel 11</span><span class="tag">MySQL</span><span class="tag">Docker</span><span class="tag">PHPUnit</span></p></div>
+            </div>
+          </div>
+          <button id="cprev" class="absolute left-2 top-24 btn !p-0 w-9 h-9" aria-label="Anterior">‹</button>
+          <button id="cnext" class="absolute right-2 top-24 btn !p-0 w-9 h-9" aria-label="Siguiente">›</button>
+        </div>
+      </div>
+      <!-- PASO 5 -->
+      <div class="panel">
+        <h3 class="text-2xl font-bold mb-2">Hoy · Freelance y Web3</h3>
+        <p>Sigo haciendo MVP en modalidad freelance, vendiéndolos a clientes cuando se presenta la oportunidad, y desarrollo proyectos personales de Web3. Tengo experiencia en sistemas médicos y financieros.</p>
+        <p class="mt-3">Si querés saber más sobre mi trabajo o te interesa contratarme, escribime por correo.</p>
+        <a href="#contacto" class="btn inline-block mt-4">Escribime</a>
+      </div>
+
+      <div class="flex justify-between mt-6">
+        <button id="tprev" class="btn-ghost">← Anterior</button>
+        <button id="tnext" class="btn">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECNOLOGÍAS (debajo de Trayectoria): palabras grandes sin recuadro. Editá la lista "tech" en el script -->
+<section id="tecnologias" class="relative px-6 py-20 max-w-6xl mx-auto">
+  <div class="text-center mb-12 reveal">
+    <h2 class="text-4xl font-bold">Stack <span class="grad-text">tecnológico</span></h2>
+    <p class="mt-2 text-sky-900/70">Lo que uso para llevar un proyecto desde la arquitectura hasta el despliegue final.</p>
+  </div>
+  <div id="tech" class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12"></div>
+</section>
+
+<!-- SOBRE MÍ -->
+<section id="quien-soy" class="px-6 py-16 max-w-3xl mx-auto text-center reveal">
+  <div class="glass p-8">
+    <h2 class="text-3xl font-bold mb-4">Sobre <span class="grad-text">Mí</span></h2>
+    <p class="leading-relaxed text-sky-900/80">Soy Ana Santa Cruz, desarrolladora Full Stack con más de 3 años de trayectoria, apasionada por crear soluciones eficientes que combinan ingeniería de sistemas tradicional con tecnologías emergentes como Web3 y la automatización inteligente. Me enfoco en escribir código limpio, modular y centrado en la experiencia de usuario.</p>
+    <p class="leading-relaxed text-sky-900/80 mt-4">Implementé pipelines de CI/CD, sistemas de gestión en tiempo real con WebSockets y plataformas de administración médica. Trabajo con autonomía técnica, y tengo experiencia en Pair Programming y Code Review bajo marcos Scrum y Kanban.</p>
+    <!-- Resumen del CV (movido desde el inicio) -->
+    <div class="rounded-2xl bg-white/60 border border-sky-100 p-6 mt-6 text-left">
+      <div class="grid grid-cols-2 gap-4 text-center">
+        <div class="p-3"><p class="text-3xl font-bold grad-text">+3 años</p><p class="text-xs text-sky-900/70">de trayectoria (2022 – presente)</p></div>
+        <div class="p-3"><p class="text-3xl font-bold grad-text">Full Stack</p><p class="text-xs text-sky-900/70">Jr. en Orbe Software · 2025–2026</p></div>
+        <div class="p-3"><p class="text-3xl font-bold grad-text">Graduada</p><p class="text-xs text-sky-900/70">Tec. Sup. en Desarrollo de Software · 2025</p></div>
+        <div class="p-3"><p class="text-3xl font-bold grad-text">Inglés B1</p><p class="text-xs text-sky-900/70">British English Institute</p></div>
+      </div>
+    </div>
+    <div class="flex justify-center gap-3 mt-6">
+      <a href="https://github.com/anika19sc" target="_blank" rel="noopener" class="btn">GitHub</a>
+      <!-- Poné tu perfil real de LinkedIn en el href -->
+      <a href="https://linkedin.com" target="_blank" rel="noopener" class="btn-ghost">LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto" class="relative px-6 py-20 max-w-3xl mx-auto">
+  <!-- IMAGEN DE FONDO CONTACTO (opcional) -->
+  <div class="bg-img" style="background-image:url('')"></div>
+  <div class="glass p-8 md:p-10 reveal">
+    <h2 class="text-3xl font-bold text-center mb-2">Contacto <span class="grad-text">directo</span></h2>
+    <p class="text-center text-sm text-sky-900/70 mb-6">Barranqueras, Chaco · <a class="font-semibold text-sky-600 hover:underline" href="mailto:anacesiasantacruz@gmail.com">anacesiasantacruz@gmail.com</a></p>
+    <!-- El formulario abre el correo del visitante hacia tu email -->
+    <form id="cf" class="space-y-4">
+      <div class="grid md:grid-cols-2 gap-4">
+        <input id="n" required placeholder="Tu nombre" class="px-4 py-3 rounded-xl border border-sky-200 bg-white/80 outline-none focus:ring-2 focus:ring-cyan-400">
+        <input id="m" type="email" required placeholder="Tu correo" class="px-4 py-3 rounded-xl border border-sky-200 bg-white/80 outline-none focus:ring-2 focus:ring-cyan-400">
+      </div>
+      <input id="s" required placeholder="Asunto" class="w-full px-4 py-3 rounded-xl border border-sky-200 bg-white/80 outline-none focus:ring-2 focus:ring-cyan-400">
+      <textarea id="t" rows="4" required placeholder="Tu mensaje" class="w-full px-4 py-3 rounded-xl border border-sky-200 bg-white/80 outline-none focus:ring-2 focus:ring-cyan-400"></textarea>
+      <button class="btn w-full">Enviar mensaje</button>
+    </form>
+  </div>
+</section>
+
+<footer class="py-8 text-center text-sm text-sky-900/60">© 2026 Ana Santa Cruz. Todos los derechos reservados.</footer>
+
+<script>
+const $=(s,c=document)=>c.querySelector(s),$$=(s,c=document)=>[...c.querySelectorAll(s)];
+
+// Aparición al hacer scroll
+const io=new IntersectionObserver(e=>e.forEach(x=>x.isIntersecting&&x.target.classList.add('show')),{threshold:.12});
+$$('.reveal').forEach(el=>io.observe(el));
+
+// Tecnologías (datos del CV)
+const tech={
+ 'Lenguajes y Frameworks':['JavaScript','TypeScript','Node.js','NestJS','PHP','Laravel','CodeIgniter','Java','Spring Boot','Solidity','Python'],
+ 'Frontend':['Angular 18/19','Vue.js 2/3','Ionic','React','Tailwind CSS'],
+ 'Bases de datos':['PostgreSQL','MySQL','Sequelize','SQLite','MongoDB','Viem','Wagmi'],
+ 'Herramientas y DevOps':['Docker','Git','GitHub','GitLab','Postman','CI/CD'],
+ 'Infraestructura':['Railway','Render','Vercel','Supabase'],
+ 'Testing':['Selenium','Playwright','PHPUnit'],
+ 'Gestión y metodologías':['Scrum','Kanban','ClickUp','Trello'],
+ 'Habilidades blandas':['Autonomía técnica','Comunicación efectiva','Pair Programming','Code Review','Adaptabilidad']
+};
+$('#tech').innerHTML=Object.entries(tech).map(([k,v])=>`<div class="reveal"><p class="tech-cat">${k}</p>${v.map(w=>`<span class="tech-word">${w}</span>`).join('')}</div>`).join('');
+$$('#tech .reveal').forEach(el=>io.observe(el));
+
+// Proyectos (editá esta lista; "tipo" debe ser Mobile, IA, Web3 o Empresa)
+/* IMÁGENES DE CADA PROYECTO (carrusel circular dentro de los dispositivos):
+   pc: capturas para la compu/tablet   ·   m: capturas para el celular
+   Ejemplo: pc:['img/vozruta-pc-1.png','img/vozruta-pc-2.png'], m:['img/vozruta-m-1.png','img/vozruta-m-2.png']
+   Si dejás [] se ven cuadros celestes de ejemplo. Agregá tablet:true para usar tablet en vez de compu. */
+const projects=[
+ {pc:[],m:[],n:'VozRuta',tipo:'Mobile',d:'Freelance para el sector transporte. App móvil multiplataforma enfocada en la experiencia del conductor, con reconocimiento de voz nativo para cargar datos manos libres y funcionamiento 100% offline.',s:'Ionic · Angular · SQLite',u:'https://voz-ruta-landing-app.vercel.app/#demo'},
+ {pc:[],m:[],n:'Bina-IA',tipo:'IA',d:'Asistente legal en fase de staging. El OCR procesa el documento jurídico y estoy implementando el manejo de tokens para que la IA sea eficiente y no consuma recursos de más.',s:'Python · OCR · Vertex AI'},
+ {pc:[],m:[],n:'Inversión de Facturas · Ankadol',tipo:'Web3',d:'Plataforma DeFi de tokenización de facturas. dApp multi-factura en Ethereum (Sepolia) con contratos de OpenZeppelin.',s:'Solidity · React · Viem · Wagmi',u:'https://inversion-factura.vercel.app/'},
+ {pc:[],m:[],n:'Sistema de Auditoría de Transacciones',tipo:'Web3',d:'Gestión financiera que une la seguridad tradicional con la inmutabilidad de blockchain: registra operaciones con firma digital del usuario para que los datos no puedan alterarse.',s:'Spring Boot · JWT · Solidity · Hardhat · MetaMask',u:'https://sistema-auditoria-azure.vercel.app/'},
+];
+function draw(f){
+  $('#grid').innerHTML=projects.filter(p=>f=='all'||p.tipo==f).map(p=>`
+  <div class="glass card p-6 flex flex-col justify-between">
+    <div class="dev-wrap">
+      <div class="laptop${p.tablet?' tablet':''}"><div class="scr">${ring(p.pc)}</div><div class="base"></div></div>
+      <div class="phone">${ring(p.m)}</div>
+    </div>
+    <div><span class="tag">${p.tipo}</span><h3 class="text-xl font-bold mt-2">${p.n}</h3>
+    <p class="text-sm text-sky-900/75 mt-2">${p.d}</p></div>
+    <p class="text-xs text-sky-600 font-semibold mt-5 pt-3 border-t border-sky-100">${p.s}</p>${p.u?`<a href="${p.u}" target="_blank" rel="noopener" class="text-sm font-semibold text-sky-600 hover:underline mt-2">Ver demo →</a>`:''}</div>`).join('');
+}
+draw('all');
+
+// Carrusel circular 3D dentro de los dispositivos
+function ring(L){
+  L=L||[];const n=Math.max(6,L.length);let h='';
+  for(let i=0;i<n;i++){h+=L.length?`<div style="background-image:url('${L[i%L.length]}')"></div>`:`<div>Captura ${i+1}</div>`}
+  return `<div class="ring" data-n="${n}"><div class="ring-in">${h}</div></div>`;
+}
+function spin(R,d){
+  R._i=(R._i||0)+d;const n=+R.dataset.n,r=R._r,rin=R.firstElementChild;
+  rin.style.transform=`translateZ(${-r}px) rotateY(${-R._i*360/n}deg)`;
+}
+function layout(){
+  $$('.ring').forEach(R=>{
+    const n=+R.dataset.n,w=R.clientWidth;if(!w)return;
+    R._r=w*.76/2/Math.tan(Math.PI/n);R.style.perspective=w*2+'px';
+    [...R.firstElementChild.children].forEach((d,i)=>d.style.transform=`rotateY(${i*360/n}deg) translateZ(${R._r}px)`);
+    spin(R,0);
+    R.onclick=()=>spin(R,1);
+  });
+}
+layout();addEventListener('load',layout);addEventListener('resize',layout);
+setInterval(()=>$$('.ring').forEach(R=>{if(R._r&&!R.matches(':hover'))spin(R,1)}),3200);
+$$('#filters .chip').forEach(b=>b.onclick=()=>{
+  $$('#filters .chip').forEach(c=>c.classList.remove('on'));b.classList.add('on');draw(b.dataset.f);
+});
+
+// Línea de tiempo
+const nodes=$$('.node'),panels=$$('.panel');let cur=0;
+function go(i){
+  cur=Math.max(0,Math.min(nodes.length-1,i));
+  nodes.forEach((n,k)=>n.classList.toggle('active',k==cur));
+  panels.forEach((p,k)=>p.classList.toggle('on',k==cur));
+  $('#prog').style.width=(cur/(nodes.length-1)*100)+'%';
+}
+nodes.forEach(n=>n.onclick=()=>go(+n.dataset.i));
+$('#tprev').onclick=()=>go(cur-1);$('#tnext').onclick=()=>go(cur+1);
+$('#tl').addEventListener('keydown',e=>{if(e.key=='ArrowRight')go(cur+1);if(e.key=='ArrowLeft')go(cur-1)});
+
+// Carrusel de la empresa
+let c=0;const total=4;
+function slide(i){c=(i+total)%total;$('#ctrack').style.transform=`translateX(-${c*100}%)`}
+$('#cprev').onclick=()=>slide(c-1);$('#cnext').onclick=()=>slide(c+1);
+
+// Formulario: abre el correo
+$('#cf').onsubmit=e=>{e.preventDefault();
+  location.href=`mailto:anacesiasantacruz@gmail.com?subject=${encodeURIComponent($('#s').value)}&body=${encodeURIComponent($('#t').value+'\n\n'+$('#n').value+' ('+$('#m').value+')')}`;
+};
+</script>
+</body>
+</html>
