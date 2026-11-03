@@ -6,83 +6,173 @@
 <title>Ana Santa Cruz | Desarrolladora Full Stack</title>
 <script src="https://cdn.tailwindcss.com/3.4.17"></script>
 <style>
-  :root{--sky:#e8f6ff;--cyan:#22d3ee;--blue:#0284c7;--deep:#0c4a6e}
-  body{background:linear-gradient(180deg,#d9f1ff 0%,#eefaff 45%,#dff4ff 100%);color:#0c4a6e;font-family:'Segoe UI',system-ui,sans-serif}
+  :root{
+    --sky:#e8f6ff;--cyan:#22d3ee;--blue:#0284c7;--deep:#0c4a6e;
+    /* Medidas fluidas: se adaptan solas al ancho de la pantalla */
+    --node:clamp(2.2rem,9vw,3.2rem);
+    --slide-h:clamp(140px,42vw,200px);
+    /* Tamaño de los adornos NUEVOS: todos los "lg" miden igual y todos los "md" miden igual */
+    --orn-lg:clamp(150px,24vw,300px);
+    --orn-md:clamp(90px,14vw,170px);
+  }
+  html{overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+  body{
+    position:relative;overflow-x:clip;max-width:100%;
+    background:linear-gradient(180deg,#d9f1ff 0%,#eefaff 45%,#dff4ff 100%);
+    color:#0c4a6e;font-family:'Segoe UI',system-ui,sans-serif;
+    overflow-wrap:break-word;
+  }
+  img,svg,video{max-width:100%}
+
   /* Vidrio estilo Frutiger Aero */
-  .glass{background:linear-gradient(145deg,rgba(255,255,255,.85),rgba(255,255,255,.45));border:1px solid rgba(255,255,255,.9);box-shadow:0 8px 30px rgba(2,132,199,.15),inset 0 1px 0 #fff;backdrop-filter:blur(10px);border-radius:1.25rem}
-  .btn{background:linear-gradient(180deg,#67e8f9,#0ea5e9 55%,#0284c7);color:#fff;border-radius:999px;padding:.7rem 1.6rem;font-weight:600;box-shadow:0 6px 16px rgba(2,132,199,.35),inset 0 2px 0 rgba(255,255,255,.6);transition:.25s}
+  .glass{background:linear-gradient(145deg,rgba(255,255,255,.85),rgba(255,255,255,.45));border:1px solid rgba(255,255,255,.9);box-shadow:0 8px 30px rgba(2,132,199,.15),inset 0 1px 0 #fff;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-radius:1.25rem}
+  .btn{display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#67e8f9,#0ea5e9 55%,#0284c7);color:#fff;border-radius:999px;padding:.7rem 1.6rem;font-weight:600;box-shadow:0 6px 16px rgba(2,132,199,.35),inset 0 2px 0 rgba(255,255,255,.6);transition:.25s}
   .btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
-  .btn-ghost{border-radius:999px;padding:.7rem 1.6rem;font-weight:600;background:rgba(255,255,255,.7);border:1px solid #bae6fd;transition:.25s}
+  .btn-ghost{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:.7rem 1.6rem;font-weight:600;background:rgba(255,255,255,.7);border:1px solid #bae6fd;transition:.25s}
   .btn-ghost:hover{background:#fff;transform:translateY(-2px)}
+  @media (max-width:480px){
+    .btn,.btn-ghost{padding:.6rem 1.15rem;font-size:.9rem}
+  }
+
   /* Burbujas flotantes */
   .bubble{position:absolute;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.95),rgba(125,211,252,.25) 60%,rgba(34,211,238,.15));border:1px solid rgba(255,255,255,.8);animation:float 9s ease-in-out infinite}
   @keyframes float{50%{transform:translateY(-22px)}}
   .reveal{opacity:0;transform:translateY(28px);transition:.8s}
   .reveal.show{opacity:1;transform:none}
-  .grad-text{background:linear-gradient(90deg,#0284c7,#22d3ee);-webkit-background-clip:text;color:transparent}
+  .grad-text{background:linear-gradient(90deg,#0284c7,#22d3ee);-webkit-background-clip:text;background-clip:text;color:transparent}
+
   /* Imagen de fondo reutilizable */
   .bg-img{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.35;z-index:-1}
+
   /* Línea de tiempo */
-  .tl{background:linear-gradient(160deg,#dfe7ee,#eef2f6 50%,#d6e2ec);border-radius:2rem;position:relative;overflow:hidden;box-shadow:inset 0 0 60px rgba(255,255,255,.8),0 10px 40px rgba(71,85,105,.15)}
+  .tl{isolation:isolate;background:linear-gradient(160deg,#dfe7ee,#eef2f6 50%,#d6e2ec);border-radius:clamp(1.25rem,4vw,2rem);position:relative;overflow:hidden;box-shadow:inset 0 0 60px rgba(255,255,255,.8),0 10px 40px rgba(71,85,105,.15)}
   .tl::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 10%,rgba(255,255,255,.9),transparent 40%),radial-gradient(circle at 90% 90%,rgba(186,230,253,.6),transparent 40%);pointer-events:none}
-  .node{width:3.2rem;height:3.2rem;border-radius:50%;background:radial-gradient(circle at 30% 25%,#fff,#bae6fd 45%,#38bdf8);border:2px solid #fff;box-shadow:0 4px 12px rgba(2,132,199,.3);transition:.3s;font-weight:700;color:#075985;position:relative;z-index:2}
+  /* Los 5 nodos van en 5 columnas iguales: nunca se salen de la pantalla */
+  .tl-nodes{position:relative;display:grid;grid-template-columns:repeat(5,1fr);place-items:center;margin-bottom:.5rem}
+  .tl-years{display:grid;grid-template-columns:repeat(5,1fr);text-align:center;font-size:clamp(.65rem,2.4vw,.75rem);font-weight:600;color:#475569;margin-bottom:1.5rem}
+  .node{width:var(--node);height:var(--node);border-radius:50%;background:radial-gradient(circle at 30% 25%,#fff,#bae6fd 45%,#38bdf8);border:2px solid #fff;box-shadow:0 4px 12px rgba(2,132,199,.3);transition:.3s;font-weight:700;font-size:clamp(.85rem,3vw,1rem);color:#075985;position:relative;z-index:2}
   .node:hover{transform:scale(1.15)}
-  .node.active{background:radial-gradient(circle at 30% 25%,#fff,#67e8f9 40%,#0284c7);color:#fff;transform:scale(1.25);box-shadow:0 0 0 6px rgba(34,211,238,.3),0 0 28px rgba(34,211,238,.9);animation:pulse 2s infinite}
-  @keyframes pulse{50%{box-shadow:0 0 0 12px rgba(34,211,238,.1),0 0 40px rgba(34,211,238,1)}}
-  .line{position:absolute;top:1.6rem;left:1.6rem;right:1.6rem;height:6px;border-radius:9px;background:#cbd5e1;overflow:hidden}
+  .node.active{background:radial-gradient(circle at 30% 25%,#fff,#67e8f9 40%,#0284c7);color:#fff;transform:scale(1.2);box-shadow:0 0 0 5px rgba(34,211,238,.3),0 0 24px rgba(34,211,238,.9);animation:pulse 2s infinite}
+  @keyframes pulse{50%{box-shadow:0 0 0 10px rgba(34,211,238,.1),0 0 36px rgba(34,211,238,1)}}
+  .line{position:absolute;top:calc(var(--node)/2 - 3px);left:10%;right:10%;height:6px;border-radius:9px;background:#cbd5e1;overflow:hidden}
   .line i{display:block;height:100%;width:0;background:linear-gradient(90deg,#22d3ee,#0284c7);box-shadow:0 0 14px #22d3ee;transition:width .6s}
   .panel{display:none;animation:in .5s}
   .panel.on{display:block}
   @keyframes in{from{opacity:0;transform:translateY(14px)}}
   .tag{display:inline-block;padding:.15rem .7rem;border-radius:999px;background:#e0f7ff;border:1px solid #bae6fd;font-size:.75rem;margin:.15rem}
+
   /* Carrusel empresa */
-  .slide-img{height:200px;border-radius:1rem;background:linear-gradient(135deg,#7dd3fc,#22d3ee 60%,#0284c7);background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;text-shadow:0 2px 6px rgba(0,0,0,.3)}
+  .slide-img{height:var(--slide-h);border-radius:1rem;background:linear-gradient(135deg,#7dd3fc,#22d3ee 60%,#0284c7);background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;text-shadow:0 2px 6px rgba(0,0,0,.3)}
+  .cbtn{position:absolute;top:calc(var(--slide-h)/2 - 18px);width:2.25rem;height:2.25rem;padding:0;z-index:3}
   .chip{padding:.4rem 1.1rem;border-radius:999px;border:1px solid #bae6fd;background:rgba(255,255,255,.7);cursor:pointer;transition:.25s;font-size:.9rem}
   .chip.on,.chip:hover{background:linear-gradient(180deg,#67e8f9,#0284c7);color:#fff}
-  .card{transition:.3s}.card:hover{transform:translateY(-6px) scale(1.02)}
-  body{position:relative}
-  /* Adornos metálicos grises de fondo (imágenes en la carpeta img/) */
-  .orn{position:absolute;pointer-events:none;z-index:-10;mix-blend-mode:multiply;filter:grayscale(1) contrast(1.15);animation:float 12s ease-in-out infinite}
+  .card{transition:.3s}
+  @media (hover:hover){.card:hover{transform:translateY(-6px) scale(1.02)}}
+
+  /* Adornos metálicos grises de fondo: van dentro de un contenedor recortado
+     para que nunca generen scroll horizontal ni "muevan" la página en el celular */
+  .orn-wrap{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+  .orn{position:absolute;pointer-events:none;z-index:-10;mix-blend-mode:multiply;filter:grayscale(1) contrast(1.15);animation:float 12s ease-in-out infinite;height:auto}
   .orn-mask{-webkit-mask-image:radial-gradient(closest-side,#000 55%,transparent);mask-image:radial-gradient(closest-side,#000 55%,transparent)}
+  @media (max-width:640px){.orn.hide-sm{display:none}}
+  /* Adornos nuevos (adorno-01 ... adorno-13): cuadrados, misma medida por grupo */
+  .orn.lg{width:var(--orn-lg);height:var(--orn-lg);object-fit:contain;opacity:.5}
+  .orn.md{width:var(--orn-md);height:var(--orn-md);object-fit:contain;opacity:.6}
+  .orn.inv{filter:invert(1) grayscale(1) contrast(1.1)}  /* imagen con fondo negro */
+  .orn.png{filter:grayscale(1) brightness(.78) contrast(1.1) drop-shadow(0 1px 2px rgba(0,0,0,.35))}  /* recorte sin fondo */
+  .orn.strong{opacity:.85}  /* para los adornos 1, 8, 9 y 10: más visibles */
+  .orn.px{image-rendering:pixelated}
+
   /* Tecnologías: palabras grandes, sin recuadro */
   .tech-cat{font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:#0284c7;padding-bottom:.5rem;margin-bottom:.8rem;border-bottom:2px solid transparent;border-image:linear-gradient(90deg,#22d3ee,transparent) 1}
-  .tech-word{display:inline-block;margin:.15rem .7rem .15rem 0;font-size:clamp(1.5rem,2.8vw,2.2rem);font-weight:800;line-height:1.15;color:#0369a1;transition:.25s;cursor:default}
+  .tech-word{display:inline-block;margin:.15rem .7rem .15rem 0;font-size:clamp(1.25rem,4.6vw,2.2rem);font-weight:800;line-height:1.15;color:#0369a1;transition:.25s;cursor:default}
   .tech-word:nth-child(3n+2){color:#0891b2}.tech-word:nth-child(3n){color:#0ea5e9}
-  .tech-word:hover{transform:translateY(-4px) scale(1.08);background:linear-gradient(90deg,#0284c7,#22d3ee);-webkit-background-clip:text;color:transparent;filter:drop-shadow(0 4px 8px rgba(34,211,238,.5))}
+  @media (hover:hover){
+    .tech-word:hover{transform:translateY(-4px) scale(1.08);background:linear-gradient(90deg,#0284c7,#22d3ee);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 8px rgba(34,211,238,.5))}
+  }
+
   /* Dispositivos con carrusel circular (proyectos) */
-  .dev-wrap{position:relative;aspect-ratio:2/1;margin-bottom:1.25rem}
+  .dev-wrap{position:relative;aspect-ratio:2/1;margin:0 auto 1.25rem;width:100%;max-width:560px}
   .laptop{position:absolute;left:0;top:0;width:74%}
-  .laptop .scr{position:relative;aspect-ratio:16/10;overflow:hidden;background:#0f172a;border:6px solid #1e293b;border-bottom-width:8px;border-radius:10px 10px 0 0;box-shadow:0 10px 24px rgba(2,132,199,.25)}
-  .laptop .base{height:10px;width:112%;margin-left:-6%;background:linear-gradient(#e2e8f0,#94a3b8);border-radius:0 0 14px 14px}
+  .laptop .scr{position:relative;aspect-ratio:16/10;overflow:hidden;background:#0f172a;border:clamp(3px,1vw,6px) solid #1e293b;border-bottom-width:clamp(4px,1.2vw,8px);border-radius:10px 10px 0 0;box-shadow:0 10px 24px rgba(2,132,199,.25)}
+  .laptop .base{height:clamp(6px,1.6vw,10px);width:112%;margin-left:-6%;background:linear-gradient(#e2e8f0,#94a3b8);border-radius:0 0 14px 14px}
   .laptop.tablet{width:62%}
-  .laptop.tablet .scr{aspect-ratio:4/3;border-width:9px;border-radius:18px}
+  .laptop.tablet .scr{aspect-ratio:4/3;border-width:clamp(4px,1.5vw,9px);border-radius:18px}
   .laptop.tablet .base{display:none}
-  .phone{position:absolute;right:0;bottom:0;width:22%;aspect-ratio:9/19;overflow:hidden;background:#0f172a;border:5px solid #1e293b;border-radius:18px;box-shadow:0 10px 24px rgba(2,132,199,.35)}
+  .phone{position:absolute;right:0;bottom:0;width:22%;aspect-ratio:9/19;overflow:hidden;background:#0f172a;border:clamp(3px,.9vw,5px) solid #1e293b;border-radius:clamp(10px,2.5vw,18px);box-shadow:0 10px 24px rgba(2,132,199,.35)}
   .ring{position:absolute;inset:0;overflow:hidden;cursor:pointer}
   .ring-in{position:absolute;inset:0;transform-style:preserve-3d;transition:transform 1s cubic-bezier(.6,0,.2,1)}
-  .ring-in>div{position:absolute;left:12%;top:0;width:76%;height:100%;backface-visibility:hidden;background:linear-gradient(135deg,#7dd3fc,#0284c7);background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.65rem;font-weight:700;text-align:center;border-radius:6px}
+  .ring-in>div{position:absolute;left:12%;top:0;width:76%;height:100%;backface-visibility:hidden;background:linear-gradient(135deg,#7dd3fc,#0284c7);background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;color:#fff;font-size:clamp(.45rem,1.4vw,.65rem);font-weight:700;text-align:center;border-radius:6px}
+
+  /* Cifras de "Sobre mí": el texto se achica solo para no desbordar */
+  .stat{font-size:clamp(1.15rem,5.4vw,1.875rem);font-weight:700;line-height:1.2}
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    .reveal{opacity:1;transform:none}
+  }
 </style>
 </head>
-<body class="overflow-x-hidden">
+<body>
 
 <!-- IMAGEN DE FONDO GENERAL (opcional): cielo, nubes, naturaleza. Poné tu URL en url('...') -->
 <div class="fixed inset-0 -z-20" style="background:url('') center/cover"></div>
 
 <!-- ADORNOS GRIS METÁLICO (silueta suelta por toda la página).
-     Para cambiar la imagen: editá el src. Para moverla: top/left/right en style. Para tamaño: width. Opacidad: opacity. -->
-<img class="orn" src="img/fondo-flor.jpg" alt="" style="top:4%;right:-40px;width:260px;opacity:.45">
-<img class="orn" src="img/fondo-flor.jpg" alt="" style="top:30%;left:-60px;width:200px;opacity:.3;animation-delay:2s">
-<img class="orn" src="img/fondo-baldosa.jpg" alt="" style="top:18%;left:38%;width:340px;opacity:.14;transform:rotate(-8deg);animation:none">
-<img class="orn orn-mask" src="img/fondo-barroco.jpg" alt="" style="top:42%;right:-80px;width:420px;opacity:.2">
-<img class="orn" src="img/fondo-flor.jpg" alt="" style="top:58%;right:6%;width:150px;opacity:.35;animation-delay:4s">
-<img class="orn" src="img/fondo-baldosa.jpg" alt="" style="top:68%;left:-80px;width:380px;opacity:.16;transform:rotate(12deg);animation:none">
-<img class="orn orn-mask" src="img/fondo-barroco.jpg" alt="" style="top:82%;left:-60px;width:380px;opacity:.18">
-<img class="orn" src="img/fondo-flor.jpg" alt="" style="top:90%;right:4%;width:220px;opacity:.4;animation-delay:3s">
+     Para cambiar la imagen: editá el src. Para moverla: top/left/right en style. Para tamaño: width. Opacidad: opacity.
+     Los anchos usan min(px, vw) para achicarse en celulares. La clase hide-sm los oculta en pantallas chicas. -->
+<div class="orn-wrap" aria-hidden="true">
+  <img class="orn" src="img/fondo-flor.jpg" alt="" style="top:4%;right:-5%;width:min(260px,40vw);opacity:.45">
+  <img class="orn hide-sm" src="img/fondo-flor.jpg" alt="" style="top:30%;left:-6%;width:min(200px,30vw);opacity:.3;animation-delay:2s">
+  <img class="orn" src="img/fondo-baldosa.jpg" alt="" style="top:18%;left:38%;width:min(340px,55vw);opacity:.14;transform:rotate(-8deg);animation:none">
+  <img class="orn orn-mask" src="img/fondo-barroco.jpg" alt="" style="top:42%;right:-8%;width:min(420px,60vw);opacity:.2">
+  <img class="orn hide-sm" src="img/fondo-flor.jpg" alt="" style="top:58%;right:6%;width:min(150px,25vw);opacity:.35;animation-delay:4s">
+  <img class="orn" src="img/fondo-baldosa.jpg" alt="" style="top:68%;left:-8%;width:min(380px,60vw);opacity:.16;transform:rotate(12deg);animation:none">
+  <img class="orn orn-mask" src="img/fondo-barroco.jpg" alt="" style="top:82%;left:-6%;width:min(380px,60vw);opacity:.18">
+  <img class="orn hide-sm" src="img/fondo-flor.jpg" alt="" style="top:90%;right:4%;width:min(220px,35vw);opacity:.4;animation-delay:3s">
+
+  <!-- ADORNOS NUEVOS (img/adorno-01 ... adorno-13): "lg" = grande, "md" = mediano; todos del mismo grupo miden igual.
+       El tamaño se cambia en :root (--orn-lg / --orn-md). inv = fondo negro · png = recorte · px = pixelado -->
+  <img class="orn lg inv" src="img/adorno-03.jpg" alt="" style="top:1.0%;left:-6%;rotate:-12deg;animation-delay:0s">
+  <img class="orn md inv" src="img/adorno-06.jpg" alt="" style="top:4.0%;right:0%;rotate:0deg;animation-delay:1s">
+  <img class="orn md png hide-sm strong" src="img/adorno-09.png" alt="" style="top:7.1%;left:2%;rotate:10deg;animation-delay:2s">
+  <img class="orn lg inv" src="img/adorno-05.jpg" alt="" style="top:10.1%;right:-3%;rotate:-6deg;animation-delay:3s">
+  <img class="orn md png strong" src="img/adorno-01.png" alt="" style="top:13.1%;left:4%;rotate:14deg;animation-delay:4s">
+  <img class="orn md png hide-sm strong" src="img/adorno-08.png" alt="" style="top:16.2%;right:4%;rotate:0deg;animation-delay:0s">
+  <img class="orn lg inv" src="img/adorno-04.jpg" alt="" style="top:19.2%;left:-6%;rotate:-9deg;animation-delay:1s">
+  <img class="orn md inv" src="img/adorno-03.jpg" alt="" style="top:22.2%;right:0%;rotate:-12deg;animation-delay:2s">
+  <img class="orn md png hide-sm" src="img/adorno-12.png" alt="" style="top:25.3%;left:2%;rotate:0deg;animation-delay:3s">
+  <img class="orn lg inv" src="img/adorno-06.jpg" alt="" style="top:28.3%;right:-3%;rotate:10deg;animation-delay:4s">
+  <img class="orn md inv" src="img/adorno-05.jpg" alt="" style="top:31.3%;left:4%;rotate:-6deg;animation-delay:0s">
+  <img class="orn md png hide-sm strong" src="img/adorno-10.png" alt="" style="top:34.4%;right:4%;rotate:14deg;animation-delay:1s">
+  <img class="orn lg png strong" src="img/adorno-01.png" alt="" style="top:37.4%;left:-6%;rotate:0deg;animation-delay:2s">
+  <img class="orn md png strong" src="img/adorno-09.png" alt="" style="top:40.4%;right:0%;rotate:-9deg;animation-delay:3s">
+  <img class="orn md inv hide-sm" src="img/adorno-03.jpg" alt="" style="top:43.5%;left:2%;rotate:-12deg;animation-delay:4s">
+  <img class="orn lg inv" src="img/adorno-04.jpg" alt="" style="top:46.5%;right:-3%;rotate:0deg;animation-delay:0s">
+  <img class="orn md png strong" src="img/adorno-08.png" alt="" style="top:49.5%;left:4%;rotate:10deg;animation-delay:1s">
+  <img class="orn md inv hide-sm" src="img/adorno-06.jpg" alt="" style="top:52.5%;right:4%;rotate:-6deg;animation-delay:2s">
+  <img class="orn lg inv" src="img/adorno-05.jpg" alt="" style="top:55.6%;left:-6%;rotate:14deg;animation-delay:3s">
+  <img class="orn md px" src="img/adorno-13.jpg" alt="" style="top:58.6%;right:0%;rotate:0deg;animation-delay:4s">
+  <img class="orn md hide-sm png strong" src="img/adorno-01.png" alt="" style="top:61.6%;left:2%;rotate:-9deg;animation-delay:0s">
+  <img class="orn lg inv" src="img/adorno-03.jpg" alt="" style="top:64.7%;right:-3%;rotate:-12deg;animation-delay:1s">
+  <img class="orn md png strong" src="img/adorno-09.png" alt="" style="top:67.7%;left:4%;rotate:0deg;animation-delay:2s">
+  <img class="orn md orn-mask hide-sm" src="img/adorno-07.jpg" alt="" style="top:70.7%;right:4%;rotate:10deg;animation-delay:3s">
+  <img class="orn lg inv" src="img/adorno-06.jpg" alt="" style="top:73.8%;left:-6%;rotate:-6deg;animation-delay:4s">
+  <img class="orn md inv" src="img/adorno-04.jpg" alt="" style="top:76.8%;right:0%;rotate:14deg;animation-delay:0s">
+  <img class="orn md inv hide-sm" src="img/adorno-05.jpg" alt="" style="top:79.8%;left:2%;rotate:0deg;animation-delay:1s">
+  <img class="orn lg" src="img/adorno-11.jpg" alt="" style="top:82.9%;right:-3%;rotate:-9deg;animation-delay:2s">
+  <img class="orn md png strong" src="img/adorno-08.png" alt="" style="top:85.9%;left:4%;rotate:-12deg;animation-delay:3s">
+  <img class="orn md hide-sm png strong" src="img/adorno-01.png" alt="" style="top:88.9%;right:4%;rotate:0deg;animation-delay:4s">
+  <img class="orn lg inv" src="img/adorno-03.jpg" alt="" style="top:92.0%;left:-6%;rotate:10deg;animation-delay:0s">
+  <img class="orn md png strong" src="img/adorno-09.png" alt="" style="top:95.0%;right:0%;rotate:-6deg;animation-delay:1s">
+  <img class="orn lg" src="img/adorno-02.jpg" alt="" style="top:0;right:0;scale:-1 1;animation:none">
+  <img class="orn lg" src="img/adorno-02.jpg" alt="" style="bottom:0;right:0;rotate:180deg;animation:none">
+</div>
 
 <!-- NAV -->
-<nav class="fixed top-3 inset-x-3 z-50 glass px-6 py-3 flex justify-between items-center max-w-6xl mx-auto">
-  <a href="#inicio" class="font-bold text-xl">Ana<span class="grad-text">.dev</span></a>
-  <div class="hidden md:flex gap-7 text-sm font-medium">
+<nav class="fixed top-2 sm:top-3 inset-x-2 sm:inset-x-3 z-50 glass px-4 sm:px-6 py-2 sm:py-3 flex justify-between items-center max-w-6xl mx-auto">
+  <a href="#inicio" class="font-bold text-lg sm:text-xl">Ana<span class="grad-text">.dev</span></a>
+  <div class="hidden md:flex gap-5 lg:gap-7 text-sm font-medium">
     <a href="#proyectos" class="hover:text-sky-500">Proyectos</a>
     <a href="#trayectoria" class="hover:text-sky-500">Trayectoria</a>
     <a href="#tecnologias" class="hover:text-sky-500">Tecnologías</a>
@@ -92,19 +182,19 @@
 </nav>
 
 <!-- HERO -->
-<header id="inicio" class="relative min-h-screen flex items-center px-6 pt-28 pb-16 overflow-hidden">
+<header id="inicio" class="relative min-h-[100svh] flex items-center px-4 sm:px-6 pt-24 sm:pt-28 pb-12 sm:pb-16 overflow-hidden">
   <!-- IMAGEN DE FONDO HERO: reemplazá url('') (ej: paisaje celeste, cielo, césped brillante) -->
   <div class="bg-img" style="background-image:url('')"></div>
-  <div class="bubble w-40 h-40 top-24 left-[8%]"></div>
-  <div class="bubble w-24 h-24 bottom-20 right-[12%]" style="animation-delay:2s"></div>
-  <div class="bubble w-16 h-16 top-1/3 right-1/4" style="animation-delay:4s"></div>
+  <div class="bubble w-24 h-24 sm:w-40 sm:h-40 top-24 left-[4%] sm:left-[8%]"></div>
+  <div class="bubble w-16 h-16 sm:w-24 sm:h-24 bottom-16 sm:bottom-20 right-[6%] sm:right-[12%]" style="animation-delay:2s"></div>
+  <div class="bubble w-10 h-10 sm:w-16 sm:h-16 top-1/3 right-[18%] sm:right-1/4" style="animation-delay:4s"></div>
 
-  <div class="max-w-6xl mx-auto relative">
-    <div class="reveal">
+  <div class="max-w-6xl w-full mx-auto relative">
+    <div class="reveal glass p-6 sm:p-10 max-w-2xl">
       <p class="font-semibold text-sky-600 mb-2">Hola, soy</p>
-      <h1 class="text-5xl lg:text-6xl font-bold leading-tight">Ana Santa Cruz<br><span class="grad-text">Desarrolladora Full Stack</span></h1>
-      <p class="mt-6 text-lg text-sky-900/80 max-w-lg">Creo aplicaciones web y móviles escalables. Trabajo con Angular, Vue, NestJS, Spring Boot y soluciones Web3 en sistemas médicos y financieros.</p>
-      <div class="flex flex-wrap gap-4 mt-8">
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">Ana Santa Cruz<br><span class="grad-text">Desarrolladora Full Stack</span></h1>
+      <p class="mt-5 sm:mt-6 text-base sm:text-lg text-sky-900/80 max-w-lg">Creo aplicaciones web y móviles escalables. Trabajo con Angular, Vue, NestJS, Spring Boot y soluciones Web3 en sistemas médicos y financieros.</p>
+      <div class="flex flex-wrap gap-3 sm:gap-4 mt-6 sm:mt-8">
         <a href="#proyectos" class="btn">Ver proyectos</a>
         <a href="#trayectoria" class="btn-ghost">Mi trayectoria</a>
       </div>
@@ -113,25 +203,25 @@
 </header>
 
 <!-- PROYECTOS (filtrables) -->
-<section id="proyectos" class="relative px-6 py-20 max-w-6xl mx-auto">
+<section id="proyectos" class="relative px-4 sm:px-6 py-14 sm:py-20 max-w-6xl mx-auto scroll-mt-20">
   <div class="text-center mb-8 reveal">
-    <h2 class="text-4xl font-bold">Proyectos <span class="grad-text">destacados</span></h2>
+    <h2 class="text-3xl sm:text-4xl font-bold">Proyectos <span class="grad-text">destacados</span></h2>
   </div>
-  <div id="grid" class="grid md:grid-cols-2 gap-8"></div>
+  <div id="grid" class="grid lg:grid-cols-2 gap-6 sm:gap-8"></div>
 </section>
 
 <!-- TRAYECTORIA: LÍNEA DE TIEMPO INTERACTIVA -->
-<section id="trayectoria" class="px-4 py-16 max-w-5xl mx-auto">
-  <div class="text-center mb-8 reveal">
-    <h2 class="text-4xl font-bold">Trayectoria</h2>
-    <p class="mt-2 text-sky-900/70">Tocá cada nodo o usá las flechas ← → del teclado en la pantalla.</p>
+<section id="trayectoria" class="px-3 sm:px-4 py-12 sm:py-16 max-w-5xl mx-auto scroll-mt-20">
+  <div class="text-center mb-8 reveal px-2">
+    <h2 class="text-3xl sm:text-4xl font-bold">Trayectoria</h2>
+    <p class="mt-2 text-sm sm:text-base text-sky-900/70">Tocá cada nodo o usá las flechas ← → del teclado en la pantalla.</p>
   </div>
 
-  <div class="tl p-6 md:p-10 reveal" tabindex="0" id="tl">
+  <div class="tl p-4 sm:p-6 md:p-10 reveal" tabindex="0" id="tl">
     <!-- IMAGEN DE FONDO TRAYECTORIA (opcional, se ve muy suave): -->
     <div class="bg-img" style="background-image:url('');opacity:.2"></div>
 
-    <div class="relative flex justify-between mb-2 px-1">
+    <div class="tl-nodes">
       <div class="line"><i id="prog"></i></div>
       <button class="node active" data-i="0">1</button>
       <button class="node" data-i="1">2</button>
@@ -139,32 +229,32 @@
       <button class="node" data-i="3">4</button>
       <button class="node" data-i="4">5</button>
     </div>
-    <div class="flex justify-between text-xs font-semibold text-slate-600 mb-8">
+    <div class="tl-years">
       <span>2022</span><span>2023</span><span>2024</span><span>2025</span><span>Hoy</span>
     </div>
 
-    <div class="glass p-6 md:p-8 relative">
+    <div class="glass p-4 sm:p-6 md:p-8 relative text-sm sm:text-base">
       <!-- PASO 1 -->
       <div class="panel on">
-        <h3 class="text-2xl font-bold mb-2">2022 · El comienzo</h3>
+        <h3 class="text-xl sm:text-2xl font-bold mb-2">2022 · El comienzo</h3>
         <p>Entré al mundo de la programación y el diseño web. Empecé con cursos y fui aprendiendo conceptos hasta dar mis primeros pasos en diseño web con HTML y CSS. Después seguí con prototipos MVP de prueba.</p>
         <p class="mt-3"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">MVP</span></p>
       </div>
       <!-- PASO 2 -->
       <div class="panel">
-        <h3 class="text-2xl font-bold mb-2">2023 · Decidí estudiar</h3>
+        <h3 class="text-xl sm:text-2xl font-bold mb-2">2023 · Decidí estudiar</h3>
         <p>A principios de 2023 quise estudiar Ingeniería en Sistemas y ahí aprendí Pascal. Lamentablemente no ingresé a la UTN de mi ciudad, pero no frené: me fascina la tecnología, y así entré a la carrera de Desarrollo de Software.</p>
         <p class="mt-3"><span class="tag">Pascal</span><span class="tag">Desarrollo de Software</span></p>
       </div>
       <!-- PASO 3 -->
       <div class="panel">
-        <h3 class="text-2xl font-bold mb-2">2024 · Construir y desplegar</h3>
+        <h3 class="text-xl sm:text-2xl font-bold mb-2">2024 · Construir y desplegar</h3>
         <p>Empecé mis primeros proyectos personales y trabajos de entrega de la carrera con Java, Spring Boot, Python, Flask, MongoDB y MariaDB. La carrera me siguió fascinando: hice cursos intensivos y seguí armando prototipos MVP con distintos stack. Aprendí no solo a construir sino también a desplegar, con Docker y configuración de pipelines, CI/CD, sistemas de gestión en tiempo real con WebSockets y plataformas de administración médica. </p>
         <p class="mt-3"><span class="tag">Java</span><span class="tag">Spring Boot</span><span class="tag">Python</span><span class="tag">Flask</span><span class="tag">MongoDB</span><span class="tag">MariaDB</span><span class="tag">Docker</span><span class="tag">CI/CD</span></p>
       </div>
       <!-- PASO 4: EMPRESA + CARRUSEL -->
       <div class="panel">
-        <h3 class="text-2xl font-bold mb-2">2025 · Mi primer trabajo</h3>
+        <h3 class="text-xl sm:text-2xl font-bold mb-2">2025 · Mi primer trabajo</h3>
         <p>Ese año me gradué de la Tecnicatura Superior en Desarrollo de Software (Instituto Barranqueras N° 161), en el ultimo año de la carrera me encontre en tener que hacer las pasantias y tener que aprobarlas, para ello, junto con colegas de la facultad ingresamos en una empresa pequeña StartUp de tecnología en mi ciudad, un grupo de 4 compañeros y entre nosotros trabajamos con clickup y trello mas adelante para la reparticiones de tareas y deadlines. Luego los jefe de la empresa me contrataron y comence a trabajar como Full Stack Jr. en Orbe Software Innovación S.R.L. (junio 2025 – marzo 2026). Hacer las pasantias y luego conseguir trabajo me sirvió para conocer cómo es el ambiente laboral real de una desarrolladora, cumplir con plazos y formarme el caracter profesional. Como ya manejaba varios stack, me resultó fácil adaptarme a la construcción de los proyectos de la empresa, en sectores como salud, seguridad y servicios con otros lenguajes que para mi en varias ocaciones eran nuevos, no tuve problemas en desenvolverme. Estos son los cuatros proyectos en los que trabajé junto a colegas:</p>
 
         <!-- CARRUSEL DE LOS 4 PROYECTOS DE LA EMPRESA -->
@@ -186,19 +276,19 @@
                 <p class="mt-2"><span class="tag">Vue.js 3</span><span class="tag">Laravel 11</span><span class="tag">MySQL</span><span class="tag">Docker</span><span class="tag">PHPUnit</span></p></div>
             </div>
           </div>
-          <button id="cprev" class="absolute left-2 top-24 btn !p-0 w-9 h-9" aria-label="Anterior">‹</button>
-          <button id="cnext" class="absolute right-2 top-24 btn !p-0 w-9 h-9" aria-label="Siguiente">›</button>
+          <button id="cprev" class="btn cbtn left-2" aria-label="Anterior">‹</button>
+          <button id="cnext" class="btn cbtn right-2" aria-label="Siguiente">›</button>
         </div>
       </div>
       <!-- PASO 5 -->
       <div class="panel">
-        <h3 class="text-2xl font-bold mb-2">Hoy · Freelance y Web3</h3>
+        <h3 class="text-xl sm:text-2xl font-bold mb-2">Hoy · Freelance y Web3</h3>
         <p>Sigo haciendo MVP en modalidad freelance, vendiéndolos a clientes cuando se presenta la oportunidad, y desarrollo proyectos personales de Web3. Tengo experiencia en sistemas médicos y financieros.</p>
         <p class="mt-3">Si querés saber más sobre mi trabajo o te interesa contratarme, escribime por correo.</p>
-        <a href="#contacto" class="btn inline-block mt-4">Escribime</a>
+        <a href="#contacto" class="btn mt-4">Escribime</a>
       </div>
 
-      <div class="flex justify-between mt-6">
+      <div class="flex justify-between gap-3 mt-6">
         <button id="tprev" class="btn-ghost">← Anterior</button>
         <button id="tnext" class="btn">Siguiente →</button>
       </div>
@@ -207,29 +297,29 @@
 </section>
 
 <!-- TECNOLOGÍAS (debajo de Trayectoria): palabras grandes sin recuadro. Editá la lista "tech" en el script -->
-<section id="tecnologias" class="relative px-6 py-20 max-w-6xl mx-auto">
-  <div class="text-center mb-12 reveal">
-    <h2 class="text-4xl font-bold">Stack <span class="grad-text">tecnológico</span></h2>
-    <p class="mt-2 text-sky-900/70">Lo que uso para llevar un proyecto desde la arquitectura hasta el despliegue final.</p>
+<section id="tecnologias" class="relative px-4 sm:px-6 py-14 sm:py-20 max-w-6xl mx-auto scroll-mt-20">
+  <div class="text-center mb-10 sm:mb-12 reveal">
+    <h2 class="text-3xl sm:text-4xl font-bold">Stack <span class="grad-text">tecnológico</span></h2>
+    <p class="mt-2 text-sm sm:text-base text-sky-900/70">Lo que uso para llevar un proyecto desde la arquitectura hasta el despliegue final.</p>
   </div>
-  <div id="tech" class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12"></div>
+  <div id="tech" class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-10 sm:gap-y-12"></div>
 </section>
 
 <!-- SOBRE MÍ -->
-<section id="quien-soy" class="px-6 py-16 max-w-3xl mx-auto text-center reveal">
-  <div class="glass p-8">
-    <h2 class="text-3xl font-bold mb-4">Sobre <span class="grad-text">Mí</span></h2>
-    <p class="leading-relaxed text-sky-900/80">Me gusta la Tecnología y me apasiona crear soluciones eficientes que combinan ingeniería de sistemas tradicional con tecnologías emergentes como Web3 y la automatización inteligente inclusive la seguridad. Me enfoco que el sistema tenga una buena impresión en la experiencia de usuario. Trabajo con autonomía técnica, y tengo experiencia en Pair Programming y Code Review bajo marcos Scrum y Kanban.</p>
+<section id="quien-soy" class="px-4 sm:px-6 py-12 sm:py-16 max-w-3xl mx-auto text-center reveal scroll-mt-20">
+  <div class="glass p-5 sm:p-8">
+    <h2 class="text-2xl sm:text-3xl font-bold mb-4">Sobre <span class="grad-text">Mí</span></h2>
+    <p class="leading-relaxed text-sm sm:text-base text-sky-900/80">Me gusta la Tecnología y me apasiona crear soluciones eficientes que combinan ingeniería de sistemas tradicional con tecnologías emergentes como Web3 y la automatización inteligente inclusive la seguridad. Me enfoco que el sistema tenga una buena impresión en la experiencia de usuario. Trabajo con autonomía técnica, y tengo experiencia en Pair Programming y Code Review bajo marcos Scrum y Kanban.</p>
     <!-- Resumen del CV (movido desde el inicio) -->
-    <div class="rounded-2xl bg-white/60 border border-sky-100 p-6 mt-6 text-left">
-      <div class="grid grid-cols-2 gap-4 text-center">
-        <div class="p-3"><p class="text-3xl font-bold grad-text">+3 años</p><p class="text-xs text-sky-900/70">de trayectoria (2022 – presente)</p></div>
-        <div class="p-3"><p class="text-3xl font-bold grad-text">Full Stack</p><p class="text-xs text-sky-900/70">Jr. en Orbe Software · 2025–2026</p></div>
-        <div class="p-3"><p class="text-3xl font-bold grad-text">Graduada</p><p class="text-xs text-sky-900/70">Tec. Sup. en Desarrollo de Software · 2025</p></div>
-        <div class="p-3"><p class="text-3xl font-bold grad-text">Inglés B1</p><p class="text-xs text-sky-900/70">British English Institute</p></div>
+    <div class="rounded-2xl bg-white/60 border border-sky-100 p-3 sm:p-6 mt-6 text-left">
+      <div class="grid grid-cols-2 gap-2 sm:gap-4 text-center">
+        <div class="p-2 sm:p-3 min-w-0"><p class="stat grad-text">+3 años</p><p class="text-xs text-sky-900/70">de trayectoria (2022 – presente)</p></div>
+        <div class="p-2 sm:p-3 min-w-0"><p class="stat grad-text">Full Stack</p><p class="text-xs text-sky-900/70">Jr. en Orbe Software · 2025–2026</p></div>
+        <div class="p-2 sm:p-3 min-w-0"><p class="stat grad-text">Graduada</p><p class="text-xs text-sky-900/70">Tec. Sup. en Desarrollo de Software · 2025</p></div>
+        <div class="p-2 sm:p-3 min-w-0"><p class="stat grad-text">Inglés B1</p><p class="text-xs text-sky-900/70">British English Institute</p></div>
       </div>
     </div>
-    <div class="flex justify-center gap-3 mt-6">
+    <div class="flex flex-wrap justify-center gap-3 mt-6">
       <a href="https://github.com/anika19sc" target="_blank" rel="noopener" class="btn">GitHub</a>
       <!-- Poné tu perfil real de LinkedIn en el href -->
       <a href="https://linkedin.com" target="_blank" rel="noopener" class="btn-ghost">LinkedIn</a>
@@ -238,17 +328,17 @@
 </section>
 
 <!-- CONTACTO -->
-<section id="contacto" class="relative px-6 py-20 max-w-3xl mx-auto">
+<section id="contacto" class="relative px-4 sm:px-6 py-14 sm:py-20 max-w-3xl mx-auto scroll-mt-20">
   <!-- IMAGEN DE FONDO CONTACTO (opcional) -->
   <div class="bg-img" style="background-image:url('')"></div>
-  <div class="glass p-8 md:p-10 reveal">
-    <h2 class="text-3xl font-bold text-center mb-2">Contacto <span class="grad-text">directo</span></h2>
-    <p class="text-center text-sm text-sky-900/70 mb-6">Barranqueras, Chaco · <a class="font-semibold text-sky-600 hover:underline" href="mailto:anacesiasantacruz@gmail.com">anacesiasantacruz@gmail.com</a></p>
+  <div class="glass p-5 sm:p-8 md:p-10 reveal">
+    <h2 class="text-2xl sm:text-3xl font-bold text-center mb-2">Contacto <span class="grad-text">directo</span></h2>
+    <p class="text-center text-sm text-sky-900/70 mb-6">Barranqueras, Chaco · <a class="font-semibold text-sky-600 hover:underline break-all" href="mailto:anacesiasantacruz@gmail.com">anacesiasantacruz@gmail.com</a></p>
     <!-- El formulario abre el correo del visitante hacia tu email -->
     <form id="cf" class="space-y-4">
       <div class="grid md:grid-cols-2 gap-4">
-        <input id="n" required placeholder="Tu nombre" class="px-4 py-3 rounded-xl border border-sky-200 bg-white/80 outline-none focus:ring-2 focus:ring-cyan-400">
-        <input id="m" type="email" required placeholder="Tu correo" class="px-4 py-3 rounded-xl border border-sky-200 bg-white/80 outline-none focus:ring-2 focus:ring-cyan-400">
+        <input id="n" required placeholder="Tu nombre" class="w-full min-w-0 px-4 py-3 rounded-xl border border-sky-200 bg-white/80 outline-none focus:ring-2 focus:ring-cyan-400">
+        <input id="m" type="email" required placeholder="Tu correo" class="w-full min-w-0 px-4 py-3 rounded-xl border border-sky-200 bg-white/80 outline-none focus:ring-2 focus:ring-cyan-400">
       </div>
       <input id="s" required placeholder="Asunto" class="w-full px-4 py-3 rounded-xl border border-sky-200 bg-white/80 outline-none focus:ring-2 focus:ring-cyan-400">
       <textarea id="t" rows="4" required placeholder="Tu mensaje" class="w-full px-4 py-3 rounded-xl border border-sky-200 bg-white/80 outline-none focus:ring-2 focus:ring-cyan-400"></textarea>
@@ -257,7 +347,7 @@
   </div>
 </section>
 
-<footer class="py-8 text-center text-sm text-sky-900/60">© 2026 Ana Santa Cruz. Todos los derechos reservados.</footer>
+<footer class="py-8 px-4 text-center text-sm text-sky-900/60">© 2026 Ana Santa Cruz. Todos los derechos reservados.</footer>
 
 <script>
 const $=(s,c=document)=>c.querySelector(s),$$=(s,c=document)=>[...c.querySelectorAll(s)];
@@ -293,16 +383,16 @@ const projects=[
 ];
 function draw(f){
   $('#grid').innerHTML=projects.filter(p=>f=='all'||p.tipo==f).map(p=>`
-  <div class="glass card p-6 flex flex-col justify-between">
+  <div class="glass card p-4 sm:p-6 flex flex-col justify-between min-w-0">
     <div class="dev-wrap">
       <div class="laptop${p.tablet?' tablet':''}"><div class="scr">${ring(p.pc)}</div><div class="base"></div></div>
       <div class="phone">${ring(p.m)}</div>
     </div>
-    <div><span class="tag">${p.tipo}</span><h3 class="text-xl font-bold mt-2">${p.n}</h3>
+    <div><span class="tag">${p.tipo}</span><h3 class="text-lg sm:text-xl font-bold mt-2">${p.n}</h3>
     <p class="text-sm text-sky-900/75 mt-2">${p.d}</p></div>
     <p class="text-xs text-sky-600 font-semibold mt-5 pt-3 border-t border-sky-100">${p.s}</p>${p.u?`<a href="${p.u}" target="_blank" rel="noopener" class="text-sm font-semibold text-sky-600 hover:underline mt-2">Ver demo →</a>`:''}</div>`).join('');
+  layout();
 }
-draw('all');
 
 // Carrusel circular 3D dentro de los dispositivos
 function ring(L){
@@ -314,8 +404,11 @@ function spin(R,d){
   R._i=(R._i||0)+d;const n=+R.dataset.n,r=R._r,rin=R.firstElementChild;
   rin.style.transform=`translateZ(${-r}px) rotateY(${-R._i*360/n}deg)`;
 }
+// Recalcula el radio de cada carrusel según el tamaño REAL en pantalla
+const ro='ResizeObserver' in window?new ResizeObserver(()=>layout()):null;
 function layout(){
   $$('.ring').forEach(R=>{
+    if(ro&&!R._obs){ro.observe(R);R._obs=true}
     const n=+R.dataset.n,w=R.clientWidth;if(!w)return;
     R._r=w*.76/2/Math.tan(Math.PI/n);R.style.perspective=w*2+'px';
     [...R.firstElementChild.children].forEach((d,i)=>d.style.transform=`rotateY(${i*360/n}deg) translateZ(${R._r}px)`);
@@ -323,7 +416,8 @@ function layout(){
     R.onclick=()=>spin(R,1);
   });
 }
-layout();addEventListener('load',layout);addEventListener('resize',layout);
+draw('all');
+addEventListener('load',layout);addEventListener('resize',layout);addEventListener('orientationchange',()=>setTimeout(layout,200));
 setInterval(()=>$$('.ring').forEach(R=>{if(R._r&&!R.matches(':hover'))spin(R,1)}),3200);
 $$('#filters .chip').forEach(b=>b.onclick=()=>{
   $$('#filters .chip').forEach(c=>c.classList.remove('on'));b.classList.add('on');draw(b.dataset.f);
@@ -341,10 +435,16 @@ nodes.forEach(n=>n.onclick=()=>go(+n.dataset.i));
 $('#tprev').onclick=()=>go(cur-1);$('#tnext').onclick=()=>go(cur+1);
 $('#tl').addEventListener('keydown',e=>{if(e.key=='ArrowRight')go(cur+1);if(e.key=='ArrowLeft')go(cur-1)});
 
-// Carrusel de la empresa
+// Carrusel de la empresa (botones + deslizar con el dedo)
 let c=0;const total=4;
 function slide(i){c=(i+total)%total;$('#ctrack').style.transform=`translateX(-${c*100}%)`}
 $('#cprev').onclick=()=>slide(c-1);$('#cnext').onclick=()=>slide(c+1);
+let sx=0;
+$('#ctrack').addEventListener('touchstart',e=>{sx=e.touches[0].clientX},{passive:true});
+$('#ctrack').addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-sx;
+  if(Math.abs(dx)>40)slide(c+(dx<0?1:-1));
+},{passive:true});
 
 // Formulario: abre el correo
 $('#cf').onsubmit=e=>{e.preventDefault();
